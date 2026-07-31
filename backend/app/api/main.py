@@ -5,7 +5,8 @@ from typing import AsyncIterator
 
 from fastapi import FastAPI
 
-from backend.app.api.routes import events, stream
+from backend.app.api.routes import events, stream, sources
+from backend.app.ingestion.sources import SourceRegistry
 from backend.app.api.services import EventPipeline
 from backend.app.core.config import get_settings
 from backend.app.core.logging import configure_logging
@@ -19,6 +20,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     configure_logging()
     settings = get_settings()
     app.state.event_pipeline = EventPipeline(str(settings.development_webhook_url) if settings.development_webhook_url else None)
+    app.state.source_registry = SourceRegistry()
     # The only current announcement input is a redacted simulated fixture.  Seed
     # it through the production pipeline so the dashboard is observable without
     # misrepresenting it as a live Binance connection.
@@ -29,6 +31,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(title="EventRadar API", lifespan=lifespan)
 app.include_router(events.router)
 app.include_router(stream.router)
+app.include_router(sources.router)
 
 
 @app.get("/")
