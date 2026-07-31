@@ -9,6 +9,7 @@ from backend.app.api.routes import events, stream
 from backend.app.api.services import EventPipeline
 from backend.app.core.config import get_settings
 from backend.app.core.logging import configure_logging
+from backend.app.worker import run_fixture_once
 
 
 @asynccontextmanager
@@ -18,6 +19,10 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     configure_logging()
     settings = get_settings()
     app.state.event_pipeline = EventPipeline(str(settings.development_webhook_url) if settings.development_webhook_url else None)
+    # The only current announcement input is a redacted simulated fixture.  Seed
+    # it through the production pipeline so the dashboard is observable without
+    # misrepresenting it as a live Binance connection.
+    run_fixture_once(app.state.event_pipeline)
     yield
 
 
