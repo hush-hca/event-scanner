@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: ./backend
+    environment:
+      EVENTRADAR_ENVIRONMENT: ${EVENTRADAR_ENVIRONMENT:-development}
+      EVENTRADAR_DATABASE_URL: ${EVENTRADAR_DATABASE_URL:-postgresql+psycopg://eventradar:eventradar@postgres:5432/eventradar}
+      EVENTRADAR_REDIS_URL: ${EVENTRADAR_REDIS_URL:-redis://redis:6379/0}
+      EVENTRADAR_DEVELOPMENT_WEBHOOK_URL: ${EVENTRADAR_DEVELOPMENT_WEBHOOK_URL:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-eventradar}
+      POSTGRES_USER: ${POSTGRES_USER:-eventradar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-eventradar}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+
+  web:
+    build:
+      context: ./web
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

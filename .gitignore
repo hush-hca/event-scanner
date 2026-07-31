@@ -1,0 +1,23 @@
+# Environment files (retain the shareable example)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node.js / Next.js
+node_modules/
+.pnpm-store/
+.next/
+out/
+coverage/
+
+# Local tooling
+.DS_Store
