@@ -5,10 +5,10 @@ from typing import AsyncIterator
 
 from fastapi import FastAPI
 
-from app.api.routes import events, stream
-from app.api.services import EventPipeline
-from app.core.config import get_settings
-from app.core.logging import configure_logging
+from backend.app.api.routes import events, stream
+from backend.app.api.services import EventPipeline
+from backend.app.core.config import get_settings
+from backend.app.core.logging import configure_logging
 
 
 @asynccontextmanager

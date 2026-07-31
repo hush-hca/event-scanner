@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from app.classification.rules import classify
-from app.domain.events import Classification, NormalizedEvent
-from app.notifications.webhook import DevelopmentWebhook
-from app.persistence.repository import InMemoryEventRepository
-from app.routing.service import ProcessedEvent, process_event
+from backend.app.classification.rules import classify
+from backend.app.domain.events import Classification, NormalizedEvent
+from backend.app.notifications.webhook import DevelopmentWebhook
+from backend.app.persistence.repository import InMemoryEventRepository
+from backend.app.routing.service import ProcessedEvent, process_event
 
 
 @dataclass(frozen=True)

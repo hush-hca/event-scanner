@@ -10,8 +10,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.domain.events import Classification, NormalizedEvent
-from app.persistence.models import Base, DeliveryRecord, EventRecord
+from backend.app.domain.events import Classification, NormalizedEvent
+from backend.app.persistence.models import Base, DeliveryRecord, EventRecord
 
 
 def delivery_key(event_id: str, channel: str) -> str:

@@ -10,9 +10,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.api.services import EventPipeline
-from app.ingestion.binance import BinanceAnnouncementAdapter
-from app.routing.service import ProcessedEvent
+from backend.app.api.services import EventPipeline
+from backend.app.ingestion.binance import BinanceAnnouncementAdapter
+from backend.app.routing.service import ProcessedEvent
 
 FIXTURE_PATH = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "binance_announcement.json"
 

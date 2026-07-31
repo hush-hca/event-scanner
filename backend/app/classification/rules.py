@@ -2,7 +2,7 @@
 
 import re
 
-from app.domain.events import Classification, Direction, EventType, NormalizedEvent, Severity
+from backend.app.domain.events import Classification, Direction, EventType, NormalizedEvent, Severity
 
 _TICKER_PATTERN = re.compile(r"(?<![A-Z0-9])\$?([A-Z]{2,10})(?![A-Z0-9])")
 _KNOWN_TICKERS = frozenset({"BTC", "ETH", "BNB", "SOL", "XRP", "USDT", "USDC", "DOGE", "ADA", "AVAX"})

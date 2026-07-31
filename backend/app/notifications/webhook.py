@@ -8,7 +8,7 @@ the developer's machine or leaking a configured webhook URL.
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from app.domain.events import Classification, NormalizedEvent
+from backend.app.domain.events import Classification, NormalizedEvent
 
 
 class Webhook(Protocol):

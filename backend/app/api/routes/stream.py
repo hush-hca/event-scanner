@@ -7,7 +7,7 @@ from collections.abc import AsyncIterator
 from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse
 
-from app.api.services import EventPipeline
+from backend.app.api.services import EventPipeline
 
 router = APIRouter(tags=["events"])
 

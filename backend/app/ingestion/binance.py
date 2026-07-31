@@ -17,7 +17,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from app.domain.events import NormalizedEvent
+from backend.app.domain.events import NormalizedEvent
 
 BINANCE_DEVELOPER_DOCS_URL = "https://developers.binance.com/en/docs/introduction"
 SOURCE_NAME = "binance_announcements"

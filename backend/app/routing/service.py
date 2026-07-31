@@ -2,9 +2,9 @@
 
 from dataclasses import dataclass
 
-from app.domain.events import Classification, NormalizedEvent
-from app.notifications.webhook import Webhook
-from app.persistence.repository import DeliveryAudit, EventRepository, delivery_key
+from backend.app.domain.events import Classification, NormalizedEvent
+from backend.app.notifications.webhook import Webhook
+from backend.app.persistence.repository import DeliveryAudit, EventRepository, delivery_key
 
 
 def channels_for(classification: Classification, webhook_enabled: bool) -> tuple[str, ...]:
