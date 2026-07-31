@@ -1,10 +1,24 @@
 """Documented FxTwitter API v2 adapter, restricted to registry entries."""
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import quote
+from urllib.request import urlopen
 from backend.app.domain.events import NormalizedEvent
 from backend.app.ingestion.sources import SourceEntry
 BASE_URL = "https://api.fxtwitter.com/2"
 class FxTwitterAdapter:
+    def fetch(self, entry: SourceEntry) -> list[NormalizedEvent]:
+        """Read only this allowlisted profile's five newest posts from API v2."""
+        if not entry.enabled:
+            return []
+        url = f"{BASE_URL}/profile/{quote(entry.handle, safe='')}/statuses?count=5"
+        try:
+            with urlopen(url, timeout=8) as response:  # noqa: S310 - fixed HTTPS host
+                import json
+                payload = json.loads(response.read().decode("utf-8"))
+        except Exception:
+            return []
+        return self.parse_response(entry, payload)
     def parse_response(self, entry: SourceEntry, payload: dict[str, Any]) -> list[NormalizedEvent]:
         if not entry.enabled or payload.get("code") != 200: return []
         events=[]

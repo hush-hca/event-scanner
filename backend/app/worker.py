@@ -12,6 +12,8 @@ from pathlib import Path
 
 from backend.app.api.services import EventPipeline
 from backend.app.ingestion.binance import BinanceAnnouncementAdapter
+from backend.app.ingestion.fxtwitter import FxTwitterAdapter
+from backend.app.ingestion.sources import SourceRegistry
 from backend.app.routing.service import ProcessedEvent
 
 FIXTURE_PATH = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "binance_announcement.json"
@@ -23,3 +25,10 @@ def run_fixture_once(pipeline: EventPipeline, fixture_path: Path = FIXTURE_PATH)
     payload = json.loads(fixture_path.read_text(encoding="utf-8"))
     events = BinanceAnnouncementAdapter().parse_fixture(payload)
     return [pipeline.process(event) for event in events]
+
+
+def run_fxtwitter_once(pipeline: EventPipeline, registry: SourceRegistry) -> list[ProcessedEvent]:
+    """Scan only enabled allowlisted handles and pass posts through the same pipeline."""
+
+    adapter = FxTwitterAdapter()
+    return [pipeline.process(event) for source in registry.list() if source.enabled for event in adapter.fetch(source)]

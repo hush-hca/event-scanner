@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 from backend.app.ingestion.sources import SourceEntry, SourceRegistry
+from backend.app.worker import run_fxtwitter_once
 router=APIRouter(tags=["sources"])
 def registry(request: Request) -> SourceRegistry: return request.app.state.source_registry
 class SourceInput(BaseModel):
@@ -16,3 +17,9 @@ def add_source(payload: SourceInput, request: Request) -> dict[str, object]:
 def patch_source(handle: str, payload: SourcePatch, request: Request) -> dict[str, object]:
     try: return registry(request).update(handle, payload.enabled).as_json()
     except KeyError as error: raise HTTPException(status_code=404, detail="source not found") from error
+
+@router.post("/sources/scan")
+def scan_sources(request: Request) -> dict[str, int]:
+    """Run a manual, bounded scan of enabled FxTwitter sources."""
+    processed = run_fxtwitter_once(request.app.state.event_pipeline, registry(request))
+    return {"processed": len(processed)}
