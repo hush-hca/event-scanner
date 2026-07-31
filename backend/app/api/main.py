@@ -26,6 +26,19 @@ app.include_router(events.router)
 app.include_router(stream.router)
 
 
+@app.get("/")
+def index() -> dict[str, str]:
+    """Provide a useful deployment-root response instead of a 404."""
+
+    return {
+        "service": "EventRadar API",
+        "status": "ok",
+        "health": "/health",
+        "events": "/events",
+        "docs": "/docs",
+    }
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     """Return a dependency-free liveness response."""
