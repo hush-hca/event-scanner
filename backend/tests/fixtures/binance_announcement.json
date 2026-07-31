@@ -1,0 +1,13 @@
+{
+  "fixture_type": "redacted_simulated_binance_announcement",
+  "announcements": [
+    {
+      "announcement_id": "redacted-fixture-001",
+      "published_at": "2026-07-31T00:15:00Z",
+      "title": "[REDACTED FIXTURE] Binance will delist $BTC trading pairs",
+      "body": "Simulated, redacted announcement content for automated contract testing only.",
+      "tickers": ["btc"],
+      "reference": "fixture://binance-announcements/redacted-fixture-001"
+    }
+  ]
+}
