@@ -9,6 +9,3 @@ dependencies = [
   "SQLAlchemy>=2.0,<3.0",
   "uvicorn[standard]>=0.30,<1.0",
 ]
-
-[tool.vercel]
-entrypoint = "backend.app.api.main:app"
